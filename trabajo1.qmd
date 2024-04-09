@@ -1,26 +1,19 @@
 ---
-title: "trabajo1"
+title: "Trabajo1"
 format: html
 editor: visual
+bibliography: percepcion-desigualdad.bib
+link-citations: true
 ---
 
-## Quarto
+Por: Kevin Carrasco
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Introducción
 
-## Running Code
+La investigación sobre percepción de desigualdad económica ha tenido un auge durante los últimos años [ver @mijsParadoxInequalityIncome2021a; también @crucesBiasedPerceptionsIncome2013].
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Específicamente, se ha encontrado evidencia sobre que... [@mijsParadoxInequalityIncome2021a]. De todas formas, @crucesBiasedPerceptionsIncome2013 plantea que...
 
-```{r}
-1 + 1
-```
+Así mismo, Mijs señala que... [-@mijsParadoxInequalityIncome2021a]
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).
+Aunque ambos concluyen que... [@mijsParadoxInequalityIncome2021a; @crucesBiasedPerceptionsIncome2013]
