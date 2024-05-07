@@ -1,0 +1,140 @@
+---
+title: "Trabajo1"
+format: html
+editor: visual
+bibliography: percepcion-desigualdad.bib
+link-citations: true
+---
+
+```{css}
+#| echo: false 
+p {
+  text-align: justify 
+  } 
+```
+
+Por: Kevin Carrasco
+
+## Introducción
+
+La investigación sobre percepción de desigualdad económica ha tenido un auge durante los últimos años [ver @mijsParadoxInequalityIncome2021a; también @crucesBiasedPerceptionsIncome2013].
+
+Específicamente, se ha encontrado evidencia sobre que... [@mijsParadoxInequalityIncome2021a]. De todas formas, @crucesBiasedPerceptionsIncome2013 plantea que...
+
+Así mismo, Mijs señala que... [-@mijsParadoxInequalityIncome2021a]
+
+Aunque ambos concluyen que... [@mijsParadoxInequalityIncome2021a; @crucesBiasedPerceptionsIncome2013]
+
+# Análisis
+
+Una vez que tenemos recodificadas nuestras variables en el archivo de preparación y logramos exportar la base de datos procesada en la carpeta input/data, abrimos un documento de quarto (.qmd) para realizar el análisis.
+
+Al trabajar con quarto (y al intentar renderizar), el documento leerá todos lo que esté escrito en el documento desde 0, por lo que es necesario **siempre** cargar de nuevo los paquetes y bases de datos.
+
+Primero cargamos los paquetes:
+
+```{r}
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot)
+```
+
+y la base procesada
+
+```{r eval=FALSE}
+load("input/data/elsoc2016_proc.RData")
+```
+
+```{r echo=FALSE}
+load("files/data/elsoc2016_proc.RData")
+```
+
+### Análisis descriptivo
+
+```{r}
+#| label: tbl-sjmisc
+#| tbl-cap: "Descriptivos"
+
+sjmisc::descr(proc_data,
+      show = c("label","range", "mean", "sd", "NA.prc", "n"))%>% # Selecciona estadísticos
+      kable(.,"markdown") # Esto es para que se vea bien en quarto
+```
+
+En la @tbl-sjmisc podemos observar los descriptivos generales de la base de datos procesada.
+
+Y si queremos visualizar algo más:
+
+```{r}
+#| label: plot-descriptivos
+#| fig-cap: "Frecuencias Cohesión barrial"
+
+proc_data %>% select(ideal, integracion, identificacion, pertenencia) %>% 
+  sjPlot::plot_stackfrq()+
+  theme(legend.position = "bottom")
+
+```
+
+En la @plot-descriptivos podemos ver la distribución de las variables de cohesión barrial, donde se puede observar que más del 65% de la muestra está de acuerdo o totalmente de acuerdo con las afirmaciones indicadas.
+
+### Asociación de variables
+
+Podemos ver la asociación de todas las variables, como lo muestra la @cor-complete
+
+```{r}
+M <- cor(proc_data, use = "complete.obs") # Usar solo casos con observaciones completas
+```
+
+```{r}
+#| label: cor-complete
+#| fig-cap: "Cohesión variables elsoc 2016"
+
+
+corrplot.mixed(M)
+```
+
+o podemos ver específicamente la asociación de las variables de cohesión barrial
+
+```{r}
+#| label: cor-cohesion
+#| fig-cap: "Correlación Cohesión barrial"
+
+M2 <- cor(dplyr::select(proc_data, ideal, integracion, identificacion, pertenencia), use = "complete.obs")
+corrplot.mixed(M2)
+```
+
+La @cor-cohesion muestra que la asociación de las cuatro variables de cohesión barrial es alta y positiva, según Cohen (1998). En general el tamaño de efecto varía entre 0.58 la más baja y 0.69 la más alta.
+
+### Construcción de escala
+
+```{r}
+psych::alpha(dplyr::select(proc_data, ideal, integracion, identificacion, pertenencia))
+```
+
+La consistencia interna de una posible escala entre estos cuatro ítems es de 0.87, lo que representa una alta consistencia interna. Si quitaramos alguno de estos ítems la consistencia interna solo bajaría, así que podemos construir una escala con los cuatro ítems.
+
+```{r}
+proc_data <- proc_data %>% 
+  rowwise() %>% 
+  mutate(cohesion_barrial = sum(ideal, integracion, identificacion, pertenencia))
+summary(proc_data$cohesion_barrial)
+```
+
+y la podemos visualizar en un gráfico:
+
+```{r}
+#| label: plot-cohesion
+#| fig-cap: "Histograma Cohesión barrial"
+
+
+ggplot(proc_data, aes(x = cohesion_barrial)) +
+  geom_histogram(binwidth=0.6, colour="black", fill="yellow") +
+  theme_bw() +
+  xlab("Cohesión barrial") +
+  ylab("Cantidad")
+```
+
+El @plot-cohesion muestra la distribución de la nueva escala de Cohesión Barrial que construimos. En general, la mayor concentración de casos está en la categoría 12 y que sumado a un promedio de 10.33 según los descriptivos anteriores, podríamos afirmar que la cohesión barrial en Chile es alta.
+
+# Subir a github
+
+Una vez que tenemos nuestro cambios hechos, vamos a Github desktop y seguimos los siguientes pasos:
+
+![](../files/img/upload-github.png)
