@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -76,16 +77,16 @@ div.csl-indent {
 }</style>
 
 
-<script src="trabajo1_files/libs/clipboard/clipboard.min.js"></script>
-<script src="trabajo1_files/libs/quarto-html/quarto.js"></script>
-<script src="trabajo1_files/libs/quarto-html/popper.min.js"></script>
-<script src="trabajo1_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="trabajo1_files/libs/quarto-html/anchor.min.js"></script>
-<link href="trabajo1_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="trabajo1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="trabajo1_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="trabajo1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="trabajo1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="trabajo_files/libs/clipboard/clipboard.min.js"></script>
+<script src="trabajo_files/libs/quarto-html/quarto.js"></script>
+<script src="trabajo_files/libs/quarto-html/popper.min.js"></script>
+<script src="trabajo_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="trabajo_files/libs/quarto-html/anchor.min.js"></script>
+<link href="trabajo_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="trabajo_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="trabajo_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="trabajo_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="trabajo_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -111,7 +112,9 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <div class="cell">
 <style type="text/css">
@@ -128,93 +131,41 @@ p {
 <p>Así mismo, Mijs señala que… <span class="citation" data-cites="mijsParadoxInequalityIncome2021a">(<a href="#ref-mijsParadoxInequalityIncome2021a" role="doc-biblioref">2021</a>)</span></p>
 <p>Aunque ambos concluyen que… <span class="citation" data-cites="mijsParadoxInequalityIncome2021a crucesBiasedPerceptionsIncome2013">(<a href="#ref-mijsParadoxInequalityIncome2021a" role="doc-biblioref">Mijs 2021</a>; <a href="#ref-crucesBiasedPerceptionsIncome2013" role="doc-biblioref">Cruces, Perez-Truglia, and Tetaz 2013</a>)</span></p>
 </section>
-<section id="análisis-descriptivo" class="level1">
-<h1>Análisis descriptivo</h1>
-<section id="cargar-paquetes" class="level2">
-<h2 class="anchored" data-anchor-id="cargar-paquetes">Cargar paquetes</h2>
+<section id="análisis" class="level1">
+<h1>Análisis</h1>
+<p>Una vez que tenemos recodificadas nuestras variables en el archivo de preparación y logramos exportar la base de datos procesada en la carpeta input/data, abrimos un documento de quarto (.qmd) para realizar el análisis.</p>
+<p>Al trabajar con quarto (y al intentar renderizar), el documento leerá todos lo que esté escrito en el documento desde 0, por lo que es necesario <strong>siempre</strong> cargar de nuevo los paquetes y bases de datos.</p>
+<p>Primero cargamos los paquetes:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(sjlabelled,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               dplyr, <span class="co">#Manipulacion de datos</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>              stargazer, <span class="co">#Tablas</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>              sjmisc, <span class="co"># Tablas</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              summarytools, <span class="co"># Tablas</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>              kableExtra, <span class="co">#Tablas</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              sjPlot, <span class="co">#Tablas y gráficos</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>              corrplot, <span class="co"># Correlaciones</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>              sessioninfo, <span class="co"># Información de la sesión de trabajo</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              ggplot2) <span class="co"># Para la mayoría de los gráficos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot, texreg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="cargar-base-de-datos" class="level2">
-<h2 class="anchored" data-anchor-id="cargar-base-de-datos">Cargar base de datos</h2>
+<p>y la base procesada</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">"https://github.com/Kevin-carrasco/R-data-analisis/raw/main/files/data/latinobarometro_total.RData"</span>)) <span class="co">#Cargar base de datos</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">"https://github.com/Kevin-carrasco/R-data-analisis/raw/main/files/data/data_wvs.RData"</span>)) <span class="co">#Cargar base de datos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"input/data/elsoc2016_proc.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="análisis-descriptivo" class="level3">
+<h3 class="anchored" data-anchor-id="análisis-descriptivo">Análisis descriptivo</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>context_data <span class="ot">&lt;-</span> wvs <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(B_COUNTRY) <span class="sc">%&gt;%</span> <span class="co"># Agrupar por país</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gdp =</span> <span class="fu">mean</span>(GDPpercap1, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Promedio de GDP per capita</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">life_exp =</span> <span class="fu">mean</span>(lifeexpect, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># Promedio esperanza de vida</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">gini =</span> <span class="fu">mean</span>(giniWB, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span>  <span class="co"># Promedio gini</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">idenpa=</span>B_COUNTRY) <span class="co"># Para poder vincular ambas bases, es necesario que la variable de identificación se llamen igual</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>context_data<span class="sc">$</span>idenpa <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(context_data<span class="sc">$</span>idenpa) <span class="co"># Como era categórica, la dejamos numérica</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>proc_data <span class="ot">&lt;-</span> proc_data <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(idenpa) <span class="sc">%&gt;%</span>  <span class="co"># agrupamos por país</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">promedio =</span> <span class="fu">mean</span>(conf_inst, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="co"># promedio de confianza en instituciones por país</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="unir-bases-de-datos" class="level2">
-<h2 class="anchored" data-anchor-id="unir-bases-de-datos">Unir bases de datos</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">merge</span>(proc_data, context_data, <span class="at">by=</span><span class="st">"idenpa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idenpa =</span> <span class="fu">as.character</span>(idenpa)) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">idenpa =</span> <span class="fu">case_when</span>(</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"32"</span> <span class="sc">~</span> <span class="st">"Argentina"</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"68"</span> <span class="sc">~</span> <span class="st">"Bolivia"</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"76"</span> <span class="sc">~</span> <span class="st">"Brasil"</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"152"</span> <span class="sc">~</span> <span class="st">"Chile"</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"170"</span> <span class="sc">~</span> <span class="st">"Colombia"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"188"</span> <span class="sc">~</span> <span class="st">"Costa Rica"</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"214"</span> <span class="sc">~</span> <span class="st">"Cuba"</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"218"</span> <span class="sc">~</span> <span class="st">"República Dominicana"</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"222"</span> <span class="sc">~</span> <span class="st">"Ecuador"</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"320"</span> <span class="sc">~</span> <span class="st">"El Salvador"</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"340"</span> <span class="sc">~</span> <span class="st">"Guatemala"</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"484"</span> <span class="sc">~</span> <span class="st">"Honduras"</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"558"</span> <span class="sc">~</span> <span class="st">"México"</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"591"</span> <span class="sc">~</span> <span class="st">"Nicaragua"</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"600"</span> <span class="sc">~</span> <span class="st">"Panamá"</span>,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"604"</span> <span class="sc">~</span> <span class="st">"Paraguay"</span>,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"858"</span> <span class="sc">~</span> <span class="st">"Uruguay"</span>,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    idenpa <span class="sc">==</span> <span class="st">"862"</span> <span class="sc">~</span> <span class="st">"Venezuela"</span>))</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>gdp <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>gdp)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>gdp[data<span class="sc">$</span>gdp<span class="sc">==</span><span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="visualizaciones" class="level2">
-<h2 class="anchored" data-anchor-id="visualizaciones">Visualizaciones</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sjmisc<span class="sc">::</span><span class="fu">descr</span>(data,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">show =</span> <span class="fu">c</span>(<span class="st">"label"</span>,<span class="st">"range"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"NA.prc"</span>, <span class="st">"n"</span>))<span class="sc">%&gt;%</span> <span class="co"># Selecciona estadísticos</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">kable</span>(.,<span class="st">"markdown"</span>) <span class="co"># Esto es para que se vea bien en quarto</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sjmisc<span class="sc">::</span><span class="fu">descr</span>(proc_data,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">show =</span> <span class="fu">c</span>(<span class="st">"label"</span>,<span class="st">"range"</span>, <span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"NA.prc"</span>, <span class="st">"n"</span>))<span class="sc">%&gt;%</span> <span class="co"># Selecciona estadísticos</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">kable</span>(.,<span class="st">"markdown"</span>) <span class="co"># Esto es para que se vea bien en quarto</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-sjmisc" class="cell quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sjmisc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Descriptivos
+</figcaption>
+<div aria-describedby="tbl-sjmisc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-sjmisc" class="anchored">
-<table class="table table-sm table-striped small">
-<caption>Table&nbsp;1: “Descriptivos con sjmisc”</caption>
+<table class="do-not-create-environment cell table table-sm table-striped small">
 <colgroup>
-<col style="width: 3%">
+<col style="width: 2%">
+<col style="width: 14%">
+<col style="width: 39%">
+<col style="width: 4%">
+<col style="width: 9%">
+<col style="width: 9%">
 <col style="width: 10%">
 <col style="width: 10%">
-<col style="width: 3%">
-<col style="width: 8%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 32%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -230,87 +181,429 @@ p {
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">4</td>
-<td style="text-align: left;">promedio</td>
-<td style="text-align: left;">promedio</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">3.40077</td>
-<td style="text-align: right;">1.016976</td>
-<td style="text-align: left;">3.59 (2.3-5.9)</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">ideal</td>
+<td style="text-align: left;">Este barrio es ideal para mi</td>
+<td style="text-align: right;">2926</td>
+<td style="text-align: right;">0.0341647</td>
+<td style="text-align: right;">2.615174</td>
+<td style="text-align: right;">1.0202541</td>
+<td style="text-align: left;">4 (0-4)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1</td>
-<td style="text-align: left;">gdp</td>
-<td style="text-align: left;">gdp</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">15528.18364</td>
-<td style="text-align: right;">6480.045512</td>
-<td style="text-align: left;">19523.79 (5631.2-25154.99)</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">integracion</td>
+<td style="text-align: left;">Me siento integrado en este barrio</td>
+<td style="text-align: right;">2923</td>
+<td style="text-align: right;">0.1366587</td>
+<td style="text-align: right;">2.565515</td>
+<td style="text-align: right;">0.9993502</td>
+<td style="text-align: left;">4 (0-4)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">3</td>
-<td style="text-align: left;">life_exp</td>
-<td style="text-align: left;">life_exp</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">75.90909</td>
-<td style="text-align: right;">2.286593</td>
-<td style="text-align: left;">8.8 (71.24-80.04)</td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">identificacion</td>
+<td style="text-align: left;">Me identifico con la gente de este barrio</td>
+<td style="text-align: right;">2923</td>
+<td style="text-align: right;">0.1366587</td>
+<td style="text-align: right;">2.523777</td>
+<td style="text-align: right;">0.9884856</td>
+<td style="text-align: left;">4 (0-4)</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">2</td>
-<td style="text-align: left;">gini</td>
-<td style="text-align: left;">gini</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">45.46364</td>
-<td style="text-align: right;">4.156266</td>
-<td style="text-align: left;">14.2 (39.7-53.9)</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">pertenencia</td>
+<td style="text-align: left;">Me siento parte de este barrio</td>
+<td style="text-align: right;">2925</td>
+<td style="text-align: right;">0.0683293</td>
+<td style="text-align: right;">2.627692</td>
+<td style="text-align: right;">0.9878809</td>
+<td style="text-align: left;">4 (0-4)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">m01</td>
+<td style="text-align: left;">Nivel educacional</td>
+<td style="text-align: right;">2925</td>
+<td style="text-align: right;">0.0683293</td>
+<td style="text-align: right;">5.260513</td>
+<td style="text-align: right;">2.2015019</td>
+<td style="text-align: left;">9 (1-10)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">m0_sexo</td>
+<td style="text-align: left;">Sexo del entrevistado</td>
+<td style="text-align: right;">2927</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.602665</td>
+<td style="text-align: right;">0.4894300</td>
+<td style="text-align: left;">1 (1-2)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">m0_edad</td>
+<td style="text-align: left;">Edad del entrevistado</td>
+<td style="text-align: right;">2927</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">46.090878</td>
+<td style="text-align: right;">15.2867983</td>
+<td style="text-align: left;">70 (18-88)</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+</figure>
 </div>
-<p>y así referenciamos <a href="#tbl-sjmisc">Table&nbsp;1</a></p>
-<section id="otra-opción-de-tabla" class="level3">
-<h3 class="anchored" data-anchor-id="otra-opción-de-tabla">Otra opción de tabla</h3>
+</div>
+<p>En la <a href="#tbl-sjmisc" class="quarto-xref">Table&nbsp;1</a> podemos observar los descriptivos generales de la base de datos procesada.</p>
+<p>Y si queremos visualizar algo más:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(<span class="fu">dfSummary</span>(data, <span class="at">headings=</span><span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Switching method to 'browser'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Output file written: C:\Users\kevin\AppData\Local\Temp\RtmpWETDBI\file4730443222bc.html</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="graficos" class="level2">
-<h2 class="anchored" data-anchor-id="graficos">Graficos</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> idenpa, <span class="at">y =</span> gdp)) <span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"País"</span>, <span class="at">y =</span> <span class="st">"Gdp"</span>) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>proc_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(ideal, integracion, identificacion, pertenencia) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  sjPlot<span class="sc">::</span><span class="fu">plot_stackfrq</span>()<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-gdp" class="quarto-figure quarto-figure-center anchored">
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="trabajo1_files/figure-html/fig-gdp-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: “PIB segun pais”</figcaption>
+<p><img src="trabajo_files/figure-html/plot-descriptivos-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Frecuencias Cohesión barrial</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Después, para referenciar al gráfico debemos usar esto: <a href="#fig-gdp">Figure&nbsp;1</a></p>
+<p>En la <span class="citation" data-cites="plot-descriptivos">(<a href="#ref-plot-descriptivos" role="doc-biblioref"><strong>plot-descriptivos?</strong></a>)</span> podemos ver la distribución de las variables de cohesión barrial, donde se puede observar que más del 65% de la muestra está de acuerdo o totalmente de acuerdo con las afirmaciones indicadas.</p>
+</section>
+<section id="asociación-de-variables" class="level3">
+<h3 class="anchored" data-anchor-id="asociación-de-variables">Asociación de variables</h3>
+<p>Podemos ver la asociación de todas las variables, como lo muestra la <strong>?@cor-complete</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(proc_data, <span class="at">use =</span> <span class="st">"complete.obs"</span>) <span class="co"># Usar solo casos con observaciones completas</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(M)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="trabajo_files/figure-html/cor-complete-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Cohesión variables elsoc 2016</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>o podemos ver específicamente la asociación de las variables de cohesión barrial</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>M2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(dplyr<span class="sc">::</span><span class="fu">select</span>(proc_data, ideal, integracion, identificacion, pertenencia), <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot.mixed</span>(M2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="trabajo_files/figure-html/cor-cohesion-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Correlación Cohesión barrial</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>La <strong>?@cor-cohesion</strong> muestra que la asociación de las cuatro variables de cohesión barrial es alta y positiva, según Cohen (1998). En general el tamaño de efecto varía entre 0.58 la más baja y 0.69 la más alta.</p>
+</section>
+<section id="construcción-de-escala" class="level3">
+<h3 class="anchored" data-anchor-id="construcción-de-escala">Construcción de escala</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(dplyr<span class="sc">::</span><span class="fu">select</span>(proc_data, ideal, integracion, identificacion, pertenencia))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = dplyr::select(proc_data, ideal, integracion, 
+    identificacion, pertenencia))
+
+  raw_alpha std.alpha G6(smc) average_r S/N    ase mean   sd median_r
+      0.87      0.87    0.84      0.63 6.8 0.0039  2.6 0.85     0.62
+
+    95% confidence boundaries 
+         lower alpha upper
+Feldt     0.86  0.87  0.88
+Duhachek  0.86  0.87  0.88
+
+ Reliability if an item is dropped:
+               raw_alpha std.alpha G6(smc) average_r S/N alpha se   var.r med.r
+ideal               0.85      0.85    0.80      0.66 5.8   0.0047 0.00086  0.65
+integracion         0.84      0.84    0.78      0.63 5.1   0.0053 0.00299  0.61
+identificacion      0.83      0.83    0.76      0.62 4.9   0.0055 0.00015  0.61
+pertenencia         0.83      0.83    0.76      0.62 4.8   0.0055 0.00121  0.61
+
+ Item statistics 
+                  n raw.r std.r r.cor r.drop mean   sd
+ideal          2926  0.83  0.83  0.73   0.69  2.6 1.02
+integracion    2923  0.85  0.85  0.78   0.73  2.6 1.00
+identificacion 2923  0.86  0.86  0.80   0.74  2.5 0.99
+pertenencia    2925  0.86  0.86  0.80   0.75  2.6 0.99
+
+Non missing response frequency for each item
+                  0    1    2    3    4 miss
+ideal          0.04 0.14 0.13 0.55 0.14    0
+integracion    0.04 0.15 0.14 0.56 0.12    0
+identificacion 0.04 0.15 0.16 0.55 0.10    0
+pertenencia    0.03 0.14 0.12 0.57 0.13    0</code></pre>
+</div>
+</div>
+<p>La consistencia interna de una posible escala entre estos cuatro ítems es de 0.87, lo que representa una alta consistencia interna. Si quitaramos alguno de estos ítems la consistencia interna solo bajaría, así que podemos construir una escala con los cuatro ítems.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>proc_data <span class="ot">&lt;-</span> proc_data <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cohesion_barrial =</span> <span class="fu">sum</span>(ideal, integracion, identificacion, pertenencia))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(proc_data<span class="sc">$</span>cohesion_barrial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+   0.00    8.00   12.00   10.33   12.00   16.00      10 </code></pre>
+</div>
+</div>
+<p>y la podemos visualizar en un gráfico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(proc_data, <span class="fu">aes</span>(<span class="at">x =</span> cohesion_barrial)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="fl">0.6</span>, <span class="at">colour=</span><span class="st">"black"</span>, <span class="at">fill=</span><span class="st">"yellow"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Cohesión barrial"</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Cantidad"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 10 rows containing non-finite values (`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="trabajo_files/figure-html/plot-cohesion-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Histograma Cohesión barrial</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El <span class="citation" data-cites="plot-cohesion">(<a href="#ref-plot-cohesion" role="doc-biblioref"><strong>plot-cohesion?</strong></a>)</span> muestra la distribución de la nueva escala de Cohesión Barrial que construimos. En general, la mayor concentración de casos está en la categoría 12 y que sumado a un promedio de 10.33 según los descriptivos anteriores, podríamos afirmar que la cohesión barrial en Chile es alta.</p>
+</section>
+<section id="regresiones" class="level2">
+<h2 class="anchored" data-anchor-id="regresiones">Regresiones</h2>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>reg5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cohesion_barrial <span class="sc">~</span> m0_edad, <span class="at">data=</span>proc_data)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>reg6 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cohesion_barrial <span class="sc">~</span> m0_edad <span class="sc">+</span> m01, <span class="at">data=</span>proc_data)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>reg7 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cohesion_barrial <span class="sc">~</span> m0_edad <span class="sc">+</span> m01 <span class="sc">+</span> m0_sexo, <span class="at">data=</span>proc_data)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">knitreg</span>(<span class="fu">list</span>(reg5, reg6, reg7), </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.model.names =</span> <span class="fu">c</span>(<span class="st">"Modelo 1"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Modelo 2"</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"Modelo 3"</span>),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.note =</span> <span class="st">"*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">custom.coef.names =</span> <span class="fu">c</span>(<span class="st">"Intercepto"</span>, </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Edad"</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Educación"</span>, </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"Mujer &lt;br&gt; &lt;i&gt;(Ref. Hombre)&lt;/i&gt;"</span>),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="st">"Cohesión barrial"</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption.above =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="texreg" style="margin: 10px auto;border-collapse: collapse;border-spacing: 0px;color: #000000;border-top: 2px solid #000000;">
+<caption>
+Cohesión barrial
+</caption>
+<thead>
+<tr>
+<th style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Modelo 1
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Modelo 2
+</th>
+<th style="padding-left: 5px;padding-right: 5px;">
+Modelo 3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Intercepto
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+8.42<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+7.96<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+8.50<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.20)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.30)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.36)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Edad
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04<sup>***</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.00)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Educación
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06<sup>*</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.06
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.03)
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Mujer <br> <i>(Ref. Hombre)</i>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+-0.33<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+&nbsp;
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+(0.13)
+</td>
+</tr>
+<tr style="border-top: 1px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="padding-left: 5px;padding-right: 5px;">
+Adj. R<sup>2</sup>
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.03
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+0.04
+</td>
+</tr>
+<tr style="border-bottom: 2px solid #000000;">
+<td style="padding-left: 5px;padding-right: 5px;">
+Num. obs.
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2917
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2915
+</td>
+<td style="padding-left: 5px;padding-right: 5px;">
+2915
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="font-size: 0.8em;" colspan="4">
+*** p &lt; 0.001; ** p &lt; 0.01; * p &lt; 0.05
+</td>
+</tr>
+</tfoot>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>(reg7, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"m0_sexo"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>predicted)) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">color=</span><span class="st">"grey"</span>, <span class="at">fill=</span><span class="st">"grey"</span>)<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width=</span>.<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Sexo"</span>, <span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">""</span>) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name =</span> <span class="st">""</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Hombre"</span>, <span class="st">"Mujer"</span>))<span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">16</span>), </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">16</span>, <span class="at">by =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="trabajo_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 </section>
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-crucesBiasedPerceptionsIncome2013" class="csl-entry" role="listitem">
 Cruces, Guillermo, Ricardo Perez-Truglia, and Martin Tetaz. 2013. <span>“Biased Perceptions of Income Distribution and Preferences for Redistribution: <span>Evidence</span> from a Survey Experiment.”</span> <em>Journal of Public Economics</em> 98 (February): 100–112. <a href="https://doi.org/10.1016/j.jpubeco.2012.10.009">https://doi.org/10.1016/j.jpubeco.2012.10.009</a>.
 </div>
@@ -398,10 +691,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -411,8 +721,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -424,7 +743,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -468,6 +910,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -493,6 +936,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -553,6 +1022,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

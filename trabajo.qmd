@@ -34,17 +34,13 @@ Al trabajar con quarto (y al intentar renderizar), el documento leerá todos lo 
 Primero cargamos los paquetes:
 
 ```{r}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot)
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot, texreg)
 ```
 
 y la base procesada
 
-```{r eval=FALSE}
+```{r}
 load("input/data/elsoc2016_proc.RData")
-```
-
-```{r echo=FALSE}
-load("files/data/elsoc2016_proc.RData")
 ```
 
 ### Análisis descriptivo
@@ -133,8 +129,37 @@ ggplot(proc_data, aes(x = cohesion_barrial)) +
 
 El @plot-cohesion muestra la distribución de la nueva escala de Cohesión Barrial que construimos. En general, la mayor concentración de casos está en la categoría 12 y que sumado a un promedio de 10.33 según los descriptivos anteriores, podríamos afirmar que la cohesión barrial en Chile es alta.
 
-# Subir a github
+## Regresiones
 
-Una vez que tenemos nuestro cambios hechos, vamos a Github desktop y seguimos los siguientes pasos:
+```{r results='asis'}
+reg5 <- lm(cohesion_barrial ~ m0_edad, data=proc_data)
+reg6 <- lm(cohesion_barrial ~ m0_edad + m01, data=proc_data)
+reg7 <- lm(cohesion_barrial ~ m0_edad + m01 + m0_sexo, data=proc_data)
 
-![](../files/img/upload-github.png)
+knitreg(list(reg5, reg6, reg7), 
+        custom.model.names = c("Modelo 1",
+                               "Modelo 2",
+                               "Modelo 3"),
+        custom.note = "*** p < 0.001; ** p < 0.01; * p < 0.05",
+        custom.coef.names = c("Intercepto", 
+                              "Edad",
+                              "Educación", 
+                              "Mujer <br> <i>(Ref. Hombre)</i>"),
+        caption = "Cohesión barrial",
+        caption.above = TRUE)
+```
+
+```{r}
+ggeffects::ggpredict(reg7, terms = c("m0_sexo")) %>%
+  ggplot(aes(x=x, y=predicted)) +
+  geom_bar(stat="identity", color="grey", fill="grey")+
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width=.1) +
+  labs(title="Sexo", x = "", y = "") +
+  theme_bw() +
+  scale_x_continuous(name = "",
+                     breaks = c(0,1),
+                     labels = c("Hombre", "Mujer"))+
+  scale_y_continuous(limits = c(0,16), 
+                     breaks = seq(0,16, by = 1))
+```
+
