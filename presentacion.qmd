@@ -5,7 +5,6 @@ format:
   revealjs:
     incremental: true 
     slideNumber: true
-    theme: beige
 editor: visual
 title-slide-attributes:
     data-background-image: /input/cohesion.jpg
