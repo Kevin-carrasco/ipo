@@ -1,0 +1,85 @@
+---
+title: "Cohesión barrial en Chile"
+author: "Kevin Carrasco"
+format:
+  revealjs:
+    incremental: true 
+    slideNumber: true
+    theme: beige
+editor: visual
+title-slide-attributes:
+    data-background-image: /input/cohesion.jpg
+    data-background-size: contain
+    data-background-opacity: "0.1"
+bibliography: cohesion.bib
+link-citations: TRUE
+---
+
+## Cohesión barrial en Chile
+
+La cohesión barrial en Chile ha sido un fenómeno altamente estudiante durante los últimos años, alcanzando distintos enfoques y repercusiones en el debate nacional [@barozet_clases_2021]
+
+Este fenómeno ha resaltado la importancia de analizar distintas condiciones sociales que producen que las personas se sientan más apegadas a sus vecindarios [@otero_lives_2022], así como también los cambios que esta ha tenido durante los últimos años [@castillo_cohesion_2022].
+
+## Datos
+
+:::: {.columns}
+
+::: {.column width="40%"}
+
+Esta investigación fue realizada con datos del Estudio Longitudinal Social de Chile (ELSOC) realizado por el Centro de Estudios de Conflicto y Cohesión Social (COES) en el año 2016.
+
+:::
+
+::: {.column width="60%"}
+
+![](output/graphs/graph1.png)
+
+:::
+
+::::
+
+## Resultados
+
+:::: {.columns}
+
+::: {.column width="40%"}
+Los principales resultados indican que la edad influye positivamente en la cohesión barrial y que las mujeres tienen menos cohesión barrial en comparación con los hombres
+:::
+
+::: {.column width="60%"}
+![](output/graphs/graph2.png)
+:::
+
+::::
+
+## Resultados 
+
+::: {.panel-tabset style="font-size: 80%;"}
+
+### Edad
+
+Más específicamente, resalta cómo la edad tiene una influencia constante en la cohesión barrial. Por cada año que aumenta la edad, la cohesión barrial aumenta 0.04 unidades, con un nivel de confianza del 99.9%, manteniendo el resto de las variables constantes
+
+![](output/graphs/graph3.png){width="40%" fig-align="center"}
+
+### Sexo
+
+Además, las mujeres tienen -0.33 unidades menos de cohesión barrial que los hombres, efecto que es significativo con un 99% de confianza, manteniendo el resto de las variables constantes.
+
+![](output/graphs/graph4.png){width="40%" fig-align="center"}
+
+:::
+
+
+## Conclusión {data-background-color="black"}
+
+De esta forma, la cohesión barrial se presenta en Chile como un fenómeno multicausal:
+
+::: {.incremental}
+- Por cada año que aumenta la edad, la cohesión barrial aumenta 0.04 unidades, con un nivel de confianza del 99.9%, manteniendo el resto de las variables constantes
+- La influencia del nivel educacional es positiva, pero no es estadísticamente significativa
+- Las mujeres tienen -0.33 unidades menos de cohesión barrial que los hombres, efecto que es significativo con un 99% de confianza.
+:::
+
+## Referencias

@@ -34,7 +34,7 @@ Al trabajar con quarto (y al intentar renderizar), el documento leerá todos lo 
 Primero cargamos los paquetes:
 
 ```{r}
-pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot, texreg)
+pacman::p_load(dplyr, sjmisc, car, sjlabelled, stargazer, haven, sjPlot, ggplot2, psych, kableExtra, corrplot, texreg, summarytools)
 ```
 
 y la base procesada
@@ -44,6 +44,11 @@ load("input/data/elsoc2016_proc.RData")
 ```
 
 ### Análisis descriptivo
+
+```{r}
+view(dfSummary(proc_data, headings=FALSE)) %>%    kable(.,"markdown")
+```
+
 
 ```{r}
 #| label: tbl-sjmisc
@@ -62,10 +67,11 @@ Y si queremos visualizar algo más:
 #| label: plot-descriptivos
 #| fig-cap: "Frecuencias Cohesión barrial"
 
-proc_data %>% select(ideal, integracion, identificacion, pertenencia) %>% 
+graph1<-proc_data %>% select(ideal, integracion, identificacion, pertenencia) %>% 
   sjPlot::plot_stackfrq()+
   theme(legend.position = "bottom")
 
+ggsave(graph1, file="output/graphs/graph1.png")
 ```
 
 En la @plot-descriptivos podemos ver la distribución de las variables de cohesión barrial, donde se puede observar que más del 65% de la muestra está de acuerdo o totalmente de acuerdo con las afirmaciones indicadas.
@@ -119,7 +125,6 @@ y la podemos visualizar en un gráfico:
 #| label: plot-cohesion
 #| fig-cap: "Histograma Cohesión barrial"
 
-
 ggplot(proc_data, aes(x = cohesion_barrial)) +
   geom_histogram(binwidth=0.6, colour="black", fill="yellow") +
   theme_bw() +
@@ -150,7 +155,38 @@ knitreg(list(reg5, reg6, reg7),
 ```
 
 ```{r}
-ggeffects::ggpredict(reg7, terms = c("m0_sexo")) %>%
+graph2<-plot_model(reg7, 
+            title = "", #quitar titulo
+            show.values = TRUE, #mostrar valor de efectos
+            dot.size = 3, #tamaño circulos
+            line.size = 1, #tamaño CI
+            value.size = 4, #tamaño valor efectoss
+            spacing = 1, #espacio entre efectos
+            vline.color = "red", # linea roja en punto neutro (0)
+            axis.labels = rev(c("Edad",
+                              "Educación", 
+                              "Mujer")), #con rev porque automatico los tira en otro orden
+            show.legend = FALSE) + # variables dependientes
+  theme_bw()
+ggsave(graph2, file="output/graphs/graph2.png")
+```
+
+
+```{r}
+graph3<-ggeffects::ggpredict(reg7, terms="m0_edad") %>%
+  ggplot(mapping=aes(x = x, y=predicted)) +
+  labs(title="Edad", x = "", y = "")+
+  theme_bw() +
+  geom_smooth()+
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, fill = "black") +
+  scale_x_continuous(breaks = seq(0,100, by = 10))+
+  scale_y_continuous(limits = c(0,16), 
+                     breaks = seq(0,16, by = 1))
+ggsave(graph3, file="output/graphs/graph3.png")
+```
+
+```{r}
+graph4<-ggeffects::ggpredict(reg7, terms = c("m0_sexo")) %>%
   ggplot(aes(x=x, y=predicted)) +
   geom_bar(stat="identity", color="grey", fill="grey")+
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width=.1) +
@@ -161,5 +197,7 @@ ggeffects::ggpredict(reg7, terms = c("m0_sexo")) %>%
                      labels = c("Hombre", "Mujer"))+
   scale_y_continuous(limits = c(0,16), 
                      breaks = seq(0,16, by = 1))
+ggsave(graph4, file="output/graphs/graph4.png")
 ```
+
 
