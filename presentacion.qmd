@@ -7,7 +7,7 @@ format:
     slideNumber: true
 editor: visual
 title-slide-attributes:
-    data-background-image: /input/cohesion.jpg
+    data-background-image: input/cohesion.jpg
     data-background-size: contain
     data-background-opacity: "0.1"
 bibliography: cohesion.bib
@@ -69,7 +69,6 @@ Además, las mujeres tienen -0.33 unidades menos de cohesión barrial que los ho
 ![](output/graphs/graph4.png){width="40%" fig-align="center"}
 
 :::
-
 
 ## Conclusión {data-background-color="black"}
 
